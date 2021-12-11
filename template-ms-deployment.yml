@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: template-ms-deployment
+  labels:
+    app: template-ms
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: template-ms
+  template:
+    metadata:
+      labels:
+        app: template-ms-pod
+    spec:
+      containers:
+        - name: template-ms
+          image: harryseong/template-ms:latest
+          ports:
+            - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: template-ms-svc
+spec:
+  type: NodePort
+  selector:
+    app: template-ms
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30080

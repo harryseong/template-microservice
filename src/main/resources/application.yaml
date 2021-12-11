@@ -1,0 +1,32 @@
+server:
+  port: 8080
+spring:
+  profiles:
+    active: ${SPRING_ACTIVE_PROFILE:dev}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh,health,loggers,threaddump,heapdump,env,info
+  endpoint:
+    loggers:
+      enabled: true
+info:
+  app:
+    name: Template Microservice
+    decription: Spring Boot template microservice for testing various features.
+    version: 0.0.1
+  java-vendor: ${java.specification.vendor}
+springdoc:
+  api-docs:
+    path: "/api-docs"
+
+---
+
+spring:
+  profiles: local
+
+---
+
+spring:
+  profiles: dev
