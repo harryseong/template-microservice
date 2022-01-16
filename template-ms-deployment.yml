@@ -3,12 +3,12 @@ kind: Deployment
 metadata:
   name: template-ms-deployment
   labels:
-    app: template-ms
+    app: template-ms-deployment
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: template-ms
+      app: template-ms-pod
   template:
     metadata:
       labels:
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: template-ms
-          image: harryseong/template-ms:latest
+          image: harryseong/template-microservice:latest
           ports:
             - containerPort: 8080
 
@@ -27,9 +27,9 @@ kind: Service
 metadata:
   name: template-ms-svc
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
-    app: template-ms
+    app: template-ms-pod
   ports:
     - protocol: TCP
       port: 8080
