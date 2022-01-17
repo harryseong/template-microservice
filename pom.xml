@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.harryseong</groupId>
 	<artifactId>template-microservice</artifactId>
-	<version>0.1.0</version>
+	<version>0.1.1</version>
 	<name>template-microservice</name>
 	<description>Template Microservice</description>
 	<properties>
