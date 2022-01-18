@@ -1,6 +1,7 @@
 package com.harryseong.templatemicroservice.controller;
 
 import com.harryseong.templatemicroservice.TemplateMicroserviceApplication;
+import com.harryseong.templatemicroservice.domain.StringCompressThread;
 import com.harryseong.templatemicroservice.domain.MemoryStat;
 import com.harryseong.templatemicroservice.service.MathService;
 import org.slf4j.Logger;
@@ -9,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1")
@@ -29,6 +33,25 @@ public class ApiControllerV1 {
             );
             LOGGER.info(String.format("Memory details: %s", memoryStat));
             return ResponseEntity.ok().body(memoryStat);
+        } catch (Exception ex) {
+            LOGGER.error("There was a server error", ex);
+            return ResponseEntity.internalServerError().body(null);
+        }
+    }
+
+    @GetMapping("string/compress")
+    public ResponseEntity<List<String>> CompressStrings(@RequestParam String[] strings) {
+        try {
+            List<String> compressedStrings = new ArrayList<>();
+            List<StringCompressThread> threads = new ArrayList<>();
+            for (var s : strings) {
+                StringCompressThread thread = new StringCompressThread(s, compressedStrings);
+                thread.start();
+                threads.add(thread);
+            }
+            for (var t: threads) t.join();
+            return ResponseEntity.ok()
+                    .body(compressedStrings);
         } catch (Exception ex) {
             LOGGER.error("There was a server error", ex);
             return ResponseEntity.internalServerError().body(null);

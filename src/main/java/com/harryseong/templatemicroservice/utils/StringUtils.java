@@ -11,4 +11,40 @@ public class StringUtils {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TIME_FORMATTER);
         return LocalDateTime.now().format(formatter);
     }
+
+    public static String compressString(String s) {
+        if (s == null || s.length() == 0) return s;
+
+        StringBuilder sb = new StringBuilder();
+        int index = 0;
+        int currentCharCount = 0;
+        Character previous = null;
+        while (index < s.length()) {
+            char current = s.charAt(index);
+
+            if (index == 0) {
+                sb.append(current);
+                previous = current;
+                currentCharCount++;
+            } else if (index < s.length() - 1) {
+                if (previous == current) {
+                    currentCharCount++;
+                } else {
+                    sb.append(currentCharCount).append(current);
+                    previous = current;
+                    currentCharCount = 1;
+                }
+            } else {
+                if (previous == current) {
+                    currentCharCount++;
+                    sb.append(currentCharCount);
+                } else sb.append(current).append(1);
+            }
+
+            index++;
+        }
+
+        String compressed = sb.toString();
+        return s.length() <= compressed.length() ? s : compressed ;
+    }
 }
